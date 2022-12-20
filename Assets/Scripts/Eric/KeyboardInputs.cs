@@ -1,0 +1,72 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+
+public class KeyboardInputs : MonoBehaviour
+{
+	public PlayerInput PlayerInputs;
+	RiseToNirvana Controls;
+	string oldcontrol;
+	public Staircase stair;
+
+
+	public void Awake()
+	{
+		Controls = new RiseToNirvana();
+		if (stair == null)
+		{
+			stair = FindObjectOfType<Staircase>();
+		}
+	}
+	public void OnEnable()
+	{
+		Controls.Enable();
+		Controls.Player.Newaction.performed += ctx => CheckKboardInputs();
+	}
+
+	public void OnDisable()
+	{
+		Controls.Disable();
+	}
+
+	/// <summary>
+	/// Check for inputaction according to your current inputsystem.
+	/// Curently using it here but it should be done in the GameController
+	/// </summary>
+	void CheckKboardInputs()
+	{
+		InputSystem.onAnyButtonPress
+			.CallOnce(ctrl => oldcontrol = ctrl.displayName.ToString().ToLower());
+		//Debug.Log(Keyboard.current[(Key)16].wasPressedThisFrame);
+
+
+		string newkey = stair.GetStep();
+		Debug.Log(newkey);
+		Debug.Log(oldcontrol);
+		if (newkey.Equals(oldcontrol))
+		{
+			stair.DestroyCurrentStep();
+		}
+		/*
+		if (PlayerInputs.actions["onType"].WasPressedThisFrame())
+			Debug.Log("R");
+	
+		Keyboard kboard = Keyboard.current;
+
+		if (kboard.anyKey.wasPressedThisFrame)
+		{
+			foreach (KeyControl k in kboard.allKeys)
+			{
+				if (k.wasPressedThisFrame)
+				{
+					Debug.Log((int)k.keyCode + "   path = " + k.path);
+					break;
+				}
+			}
+		}
+	*/
+	}
+}
