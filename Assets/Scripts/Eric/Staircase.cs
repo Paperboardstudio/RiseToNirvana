@@ -12,6 +12,7 @@ public class Staircase : MonoBehaviour
 	private List<char> characters; // the list of characters to choose from
 	public List<Step> steps; // the list of instantiated steps
 	public int currentStep = 0; // the index of the current step
+	public Transform spawnLocation;	// the spawn location for the steps
 
 	void Start()
 	{
@@ -38,7 +39,7 @@ public class Staircase : MonoBehaviour
 			// create a new step
 			GameObject stepObject = Instantiate(stepPrefab, transform);
 			Step step = stepObject.GetComponent<Step>();
-			step.transform.position = new Vector3(0, i * stepHeight, 0);
+			step.transform.position = new Vector3(spawnLocation.transform.position.x, spawnLocation.transform.position.y+ i * stepHeight, spawnLocation.transform.position.z);
 			steps.Add(step);
 
 			// assign a character to the step
@@ -59,20 +60,67 @@ public class Staircase : MonoBehaviour
 			charactersPerStep++;
 		}
 	}
+
+	/// <summary>
+	/// Destroy the current step (might change to highlighting)
+	/// </summary>
 	public void DestroyCurrentStep()
 	{
-		steps[currentStep].gameObject.SetActive(false);
-		currentStep++;
-	}
-	public string GetStep() {
-		Step step = steps[currentStep];
-		string character = step.GetCharacter();
+		Debug.Log(steps.Count);
 
-		return character;
+		if (currentStep <= steps.Count-1)
+		{
+			Debug.Log("CURRENTLY " + currentStep);
+
+			steps[currentStep].gameObject.SetActive(false);
+			currentStep++;
+		}
+		else
+		{
+			MoveToNewFloor();
+		}
 	}
-	// regenerates the characters for all the steps and updates the text meshes
+
+	/// <summary>
+	/// Reset the states of the visual steps and regenerate their characters
+	/// </summary>
+	public void MoveToNewFloor()
+	{
+		for (int i = 0; i < currentStep; i++)
+		{
+			steps[i].gameObject.SetActive(true);
+		}
+		RegenerateCharacters();
+	}
+	/// <summary>
+	/// returns the character from the current step and regenerates if we reach the top of the steps
+	/// </summary>
+	/// <returns>returns the character from the current step</returns>
+	public string GetStep()
+	{
+		
+		if(currentStep < steps.Count-1)
+		{
+			Debug.Log("CURRENT" + currentStep + steps.Count);
+			Step step = steps[currentStep];
+			string character = step.GetCharacter();
+			return character;
+
+		}
+		else
+		{
+			MoveToNewFloor();
+			currentStep = 0;
+			return GetStep();
+		}
+	}
+
+	/// <summary>
+	///	regenerates the characters for all the steps and updates the text meshes
+	/// </summary>
 	public void RegenerateCharacters()
 	{
+		
 		// shuffle the list of characters
 		for (int i = 0; i < characters.Count; i++)
 		{
