@@ -19,12 +19,14 @@ public class TESTOnKeyPress : MonoBehaviour
 			TESTScoreTracking.updateUI += AddMissesScorePoints;
 			TESTScoreTracking.updateUI();
 			TESTScoreTracking.updateUI -= AddMissesScorePoints;
+			Time.timeScale = 1f;
 		}
 		if (Input.GetKeyDown(KeyCode.I))
 		{
 			TESTScoreTracking.updateUI += AddCurrentScorePoints;
 			TESTScoreTracking.updateUI();
 			TESTScoreTracking.updateUI -= AddCurrentScorePoints;
+			Time.timeScale = 0f;
 		}
     }
 
