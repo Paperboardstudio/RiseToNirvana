@@ -16,16 +16,16 @@ public class TESTOnKeyPress : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.P))
 		{
-			TESTScoreTracking.updateUI += AddMissesScorePoints;
-			TESTScoreTracking.updateUI();
-			TESTScoreTracking.updateUI -= AddMissesScorePoints;
+			ScoreManager.updateScore += AddMissesScorePoints;
+			ScoreManager.updateScore();
+			ScoreManager.updateScore -= AddMissesScorePoints;
 			Time.timeScale = 1f;
 		}
 		if (Input.GetKeyDown(KeyCode.I))
 		{
-			TESTScoreTracking.updateUI += AddCurrentScorePoints;
-			TESTScoreTracking.updateUI();
-			TESTScoreTracking.updateUI -= AddCurrentScorePoints;
+			ScoreManager.updateScore += AddCurrentScorePoints;
+			ScoreManager.updateScore();
+			ScoreManager.updateScore -= AddCurrentScorePoints;
 			Time.timeScale = 0f;
 		}
     }
@@ -34,17 +34,17 @@ public class TESTOnKeyPress : MonoBehaviour
 	void AddMissesScorePoints()
 	{
 		score.missScore++;
-		score.UpdateMissesScore();
+		//score.UpdateMissesScore();
 		Debug.Log(score.missScore);
 	}
 	void AddCurrentScorePoints()
 	{
 
 		score.currentScore += 10;
-		score.UpdateCurrentScore();
+		//score.UpdateCurrentScore();
 		Debug.Log(score.currentScore);
 		score.CheckHighScore();
-		score.UpdateHighScoreText();
+		score.UpdateUI();
 	}
 
 }
