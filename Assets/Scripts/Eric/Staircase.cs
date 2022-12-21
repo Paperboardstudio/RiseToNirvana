@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Staircase : MonoBehaviour
 {
+	[Header("Prefabs")]
 	public GameObject stepPrefab; // the prefab for a single step
-	public int numSteps = 10; // the number of steps in the staircase
-	public float stepHeight = 1f; // the height of each step
-	public float characterSize = 0.5f; // the size of the characters
-	public int charactersPerStep = 1; // the number of characters to display on each step
+	public Transform spawnLocationPrefab; // the spawn location for the steps
+
+	[Header("Data input")]
+	[field: SerializeField] int numSteps = 10; // the number of steps in the staircase
+	[field: SerializeField] float stepHeight = 1f; // the height of each step
+	[field: SerializeField] float characterSize = 0.5f; // the size of the characters
+	[field:SerializeField] int charactersPerStep = 1; // the number of characters to display on each step
+
+	List<Step> steps { get; set; } // the list of instantiated steps
+	int currentStep = 0; // the index of the current step
 	private List<char> characters; // the list of characters to choose from
-	public List<Step> steps; // the list of instantiated steps
-	public int currentStep = 0; // the index of the current step
-	public Transform spawnLocation;	// the spawn location for the steps
 
 	void Start()
 	{
@@ -39,7 +43,7 @@ public class Staircase : MonoBehaviour
 			// create a new step
 			GameObject stepObject = Instantiate(stepPrefab, transform);
 			Step step = stepObject.GetComponent<Step>();
-			step.transform.position = new Vector3(spawnLocation.transform.position.x, spawnLocation.transform.position.y+ i * stepHeight, spawnLocation.transform.position.z);
+			step.transform.position = new Vector3(spawnLocationPrefab.transform.position.x, spawnLocationPrefab.transform.position.y+ i * stepHeight, spawnLocationPrefab.transform.position.z);
 			steps.Add(step);
 
 			// assign a character to the step
@@ -92,6 +96,7 @@ public class Staircase : MonoBehaviour
 		}
 		RegenerateCharacters();
 	}
+
 	/// <summary>
 	/// returns the character from the current step and regenerates if we reach the top of the steps
 	/// </summary>

@@ -71,6 +71,15 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnPause"",
+                    ""type"": ""Button"",
+                    ""id"": ""95b8b146-aff5-4643-8753-f0be92177abd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -313,6 +322,17 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84fa241f-4744-4b3d-a61e-f583e3b90861"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""OnPause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -905,6 +925,7 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_OnType = m_Player.FindAction("OnType", throwIfNotFound: true);
         m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
+        m_Player_OnPause = m_Player.FindAction("OnPause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -981,6 +1002,7 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_OnType;
     private readonly InputAction m_Player_Newaction;
+    private readonly InputAction m_Player_OnPause;
     public struct PlayerActions
     {
         private @RiseToNirvana m_Wrapper;
@@ -990,6 +1012,7 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @OnType => m_Wrapper.m_Player_OnType;
         public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
+        public InputAction @OnPause => m_Wrapper.m_Player_OnPause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1014,6 +1037,9 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
                 @Newaction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
                 @Newaction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
                 @Newaction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
+                @OnPause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnPause;
+                @OnPause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnPause;
+                @OnPause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1033,6 +1059,9 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
                 @Newaction.started += instance.OnNewaction;
                 @Newaction.performed += instance.OnNewaction;
                 @Newaction.canceled += instance.OnNewaction;
+                @OnPause.started += instance.OnOnPause;
+                @OnPause.performed += instance.OnOnPause;
+                @OnPause.canceled += instance.OnOnPause;
             }
         }
     }
@@ -1194,6 +1223,7 @@ public partial class @RiseToNirvana : IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnOnType(InputAction.CallbackContext context);
         void OnNewaction(InputAction.CallbackContext context);
+        void OnOnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
