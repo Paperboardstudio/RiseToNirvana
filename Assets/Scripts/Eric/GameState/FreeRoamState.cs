@@ -17,10 +17,11 @@ public class FreeRoamState : State<KeyboardInputs>
     public override void Execute()
     {
 		//KeyboardInputs.i.HandleUpdate();
-
+		/* We are doing it manually so hmm.
         if (Input.GetKeyDown(KeyCode.Return))
         {
             gc.StateMachine.Push(GameMenuState.i);
         }
+		*/
     }
 }

@@ -9,29 +9,48 @@ using System;
 public enum GameState { FreeRoam, Paused }
 public class KeyboardInputs : MonoBehaviour
 {
+	public static KeyboardInputs i;
+
+	[Header("Prefabs")]
 	public GameObject PauseMenu;
-	public PlayerInput PlayerInputs;
+	public GameObject MapMenu;
+
 	RiseToNirvana Controls;
+
+	[Header("References to script")]
 	public Staircase stair;
-	public StateMachine<KeyboardInputs> StateMachine { get; private set; }
-	GameState state;
+	public ScoreManager score;
 
-	public event Action<bool> OnGamePaused;
+	public StateMachine<KeyboardInputs> StateMachine { get; private set; } //State machine is missing stuff but it works just for checking pausing
+	public GameState state { get; private set; }
 
-	public bool DebugMode = false;	public void Awake()
+	public event Action<bool> OnGamePaused;		// Subscribe the event here to the function
+
+	[Header("Debug")]
+	public bool DebugMode = false;
+
+	public void Awake()
 	{
+		i = this;
 		Controls = new RiseToNirvana();
+	}
+	void Start()
+	{
 		if (stair == null)
 		{
 			stair = FindObjectOfType<Staircase>();
 		}
-	}
-	void Start()
-	{
+		if (score == null)
+		{
+			score = FindObjectOfType<ScoreManager>();
+		}
+
 		StateMachine = new StateMachine<KeyboardInputs>(this);
 		StateMachine.ChangeState(FreeRoamState.i);
 
-		//playerController.onEncountered += PausedGame;
+
+		MapMenu.GetComponentInParent<MapUI>().Init(stair);
+		//EventManager.onCutScene += PausedGame;
 	}
 	public void OnEnable()
 	{
@@ -47,17 +66,44 @@ public class KeyboardInputs : MonoBehaviour
 		if(state != GameState.Paused)
 		{
 			string newkey = stair.GetStep();
-			string passedKey = oldcontrol.displayName.ToString().ToLower();
-		
+			string passedKey = oldcontrol.displayName.ToString().ToLower();			
+			Time.timeScale = 1f;
 
 			if (newkey.Equals(passedKey))
 			{
+				AddScoreDelegate();
 				stair.DestroyCurrentStep();
+			}
+			else {
+				AddMissDelegate();
 			}
 
 			if (DebugMode)
 				Debug.Log("Stairs key :" + newkey + " Typed Key: "+passedKey);
 		}
+	}
+	void AddMissDelegate()
+	{
+		ScoreManager.updateScore += AddMissesScorePoints;
+		ScoreManager.updateScore();
+		ScoreManager.updateScore -= AddMissesScorePoints;
+	}
+	void AddScoreDelegate()
+	{
+		ScoreManager.updateScore += AddCurrentScorePoints;
+		ScoreManager.updateScore();
+		ScoreManager.updateScore -= AddCurrentScorePoints;
+	}
+	void AddMissesScorePoints()
+	{
+		score.missScore++;
+		score.UpdateUI();
+	}
+	void AddCurrentScorePoints()
+	{
+		score.currentScore += 10;
+		score.CheckHighScore();
+		score.UpdateUI();
 	}
 	public void OnDisable()
 	{
@@ -65,7 +111,7 @@ public class KeyboardInputs : MonoBehaviour
 	}
 	private void Update()
 	{
-	
+		// StateMachine.Execute(); This belongs here but we did it kinda wrong and update the StateMachine manually
 	}
 
 

@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour
 		{
 			stair = FindObjectOfType<Staircase>();
 		}
-
     }
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,12 @@ public class Staircase : MonoBehaviour
 	[field: SerializeField] int numSteps = 10; // the number of steps in the staircase
 	[field: SerializeField] float stepHeight = 1f; // the height of each step
 	[field: SerializeField] float characterSize = 0.5f; // the size of the characters
-	[field:SerializeField] int charactersPerStep = 1; // the number of characters to display on each step
+	[field: SerializeField] int charactersPerStep = 1; // the number of characters to display on each step
+	[field: SerializeField] public int TopFloor { get; private set; }
+	[field: SerializeField] public int CurrentFloor { get; set;  }
+
+	public event Action UIChange;	
+
 
 	List<Step> steps { get; set; } // the list of instantiated steps
 	int currentStep = 0; // the index of the current step
@@ -30,7 +36,7 @@ public class Staircase : MonoBehaviour
 		// shuffle the list of characters
 		for (int i = 0; i < characters.Count; i++)
 		{
-			int j = Random.Range(i, characters.Count);
+			int j = UnityEngine.Random.Range(i, characters.Count);
 			char temp = characters[i];
 			characters[i] = characters[j];
 			characters[j] = temp;
@@ -70,14 +76,14 @@ public class Staircase : MonoBehaviour
 	/// </summary>
 	public void DestroyCurrentStep()
 	{
-		Debug.Log(steps.Count);
-
 		if (currentStep <= steps.Count-1)
 		{
-			Debug.Log("CURRENTLY " + currentStep);
-
 			steps[currentStep].gameObject.SetActive(false);
 			currentStep++;
+			if(currentStep == steps.Count)
+			{
+				MoveToNewFloor();
+			}
 		}
 		else
 		{
@@ -90,10 +96,15 @@ public class Staircase : MonoBehaviour
 	/// </summary>
 	public void MoveToNewFloor()
 	{
-		for (int i = 0; i < currentStep; i++)
+		currentStep = 0;
+		for (int i = 0; i < steps.Count; i++)
 		{
 			steps[i].gameObject.SetActive(true);
 		}
+
+		CurrentFloor += 1;
+
+		UIChange();
 		RegenerateCharacters();
 	}
 
@@ -103,19 +114,15 @@ public class Staircase : MonoBehaviour
 	/// <returns>returns the character from the current step</returns>
 	public string GetStep()
 	{
-		
-		if(currentStep < steps.Count-1)
+		if (currentStep <= steps.Count)
 		{
-			Debug.Log("CURRENT" + currentStep + steps.Count);
 			Step step = steps[currentStep];
 			string character = step.GetCharacter();
 			return character;
-
 		}
 		else
 		{
 			MoveToNewFloor();
-			currentStep = 0;
 			return GetStep();
 		}
 	}
@@ -125,11 +132,10 @@ public class Staircase : MonoBehaviour
 	/// </summary>
 	public void RegenerateCharacters()
 	{
-		
 		// shuffle the list of characters
 		for (int i = 0; i < characters.Count; i++)
 		{
-			int j = Random.Range(i, characters.Count);
+			int j = UnityEngine.Random.Range(i, characters.Count);
 			char temp = characters[i];
 			characters[i] = characters[j];
 			characters[j] = temp;
