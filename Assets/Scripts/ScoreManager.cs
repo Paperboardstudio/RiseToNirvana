@@ -18,9 +18,7 @@ public class ScoreManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		UpdateHighScoreText();
-		UpdateCurrentScore();
-		UpdateMissesScore();
+		UpdateUI();
     }
 
 	/// <summary>
@@ -34,31 +32,35 @@ public class ScoreManager : MonoBehaviour
 		if (currentScore > PlayerPrefs.GetInt("HighScore", 0))
 		{
 			PlayerPrefs.SetInt("HighScore", currentScore);
-			UpdateHighScoreText();
+			UpdateUI();
 		}
 	}
 	/// <summary>
 	/// Updates the text of "highScoreText" and the value of "HighScore"
 	/// Can be dynamic by being call in the function that adds points to currentScore
-	/// </summary>
-	public void UpdateHighScoreText()
-	{
-		highScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
-	}
-	/// <summary>
 	/// Updates the text of "currentScoreText"
 	/// Can be dynamic by being call in the function that adds points to currentScore
-	/// </summary>
-	public void UpdateCurrentScore()
-	{
-		currentScoreText.text = "Current Score: " + currentScore.ToString();
-	}
-	/// <summary>
 	/// Updates the text of "missesScoreText"
 	/// Can be dynamic by being call in the function that adds points to missScore
 	/// </summary>
-	public void UpdateMissesScore()
+	public void UpdateUI()
 	{
+		highScoreText.text = $"HighScore: {PlayerPrefs.GetInt("HighScore", 0)}";
+		currentScoreText.text = "Current Score: " + currentScore.ToString();
 		missesScoreText.text = "Misses: " + missScore.ToString();
+	}
+	//Adds points when the player presses the wrong key 
+	void AddMissesScorePoints()
+	{
+		missScore++;
+		UpdateUI();
+		//Debug.Log(missScore);
+	}
+	// Adds points when the player presses the right key 
+	void AddCurrentScorePoints()
+	{
+		currentScore += 10;
+		//Debug.Log(currentScore);
+		UpdateUI();
 	}
 }
