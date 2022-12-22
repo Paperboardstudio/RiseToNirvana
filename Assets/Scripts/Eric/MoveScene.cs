@@ -12,4 +12,8 @@ public class MoveScene : MonoBehaviour
 	{
 		UnityEngine.SceneManagement.SceneManager.LoadScene(sceneNumber);
 	}
+	public void QuitGame()
+	{
+		Application.Quit();
+	}
 }
