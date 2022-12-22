@@ -15,6 +15,7 @@ public class KeyboardInputs : MonoBehaviour
 	public GameObject PauseMenu;
 	public GameObject MapMenu;
 	public DialogueTrigger TriggerDialogue;
+	[field: SerializeField] private PlayerController playerController;
 
 	RiseToNirvana Controls;
 
@@ -38,13 +39,14 @@ public class KeyboardInputs : MonoBehaviour
 	void Start()
 	{
 		if (stair == null)
-		{
 			stair = FindObjectOfType<Staircase>();
-		}
+		
 		if (score == null)
-		{
 			score = FindObjectOfType<ScoreManager>();
-		}
+		
+		if (playerController == null)
+			playerController = FindObjectOfType<PlayerController>();
+		
 
 		StateMachine = new StateMachine<KeyboardInputs>(this);
 		StateMachine.ChangeState(FreeRoamState.i);
@@ -72,12 +74,14 @@ public class KeyboardInputs : MonoBehaviour
 			string passedKey = oldcontrol.displayName.ToString().ToLower();			
 			Time.timeScale = 1f;
 
-			if (newkey.Equals(passedKey))
+			if (newkey.Equals(passedKey) && !newkey.Equals("esc"))
 			{
+				playerController.IsWalking(1);
 				AddScoreDelegate();
 				stair.DestroyCurrentStep();
 			}
 			else {
+				playerController.IsWalking(0);
 				AddMissDelegate();
 			}
 
