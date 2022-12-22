@@ -10,6 +10,7 @@ public class DialogueManager : MonoBehaviour
 	[Header("Dialogue UI")]
 	[SerializeField] private GameObject dialoguePanel;
 	[SerializeField] private TextMeshProUGUI dialogueText;
+	[SerializeField] float secondsDelay = 0.5f;
 
 	[Header("Choices UI")]
 	[SerializeField] private GameObject[] choices;
@@ -30,18 +31,15 @@ public class DialogueManager : MonoBehaviour
 	}
 
 	//add the code down below to freeze actions
-	/*if (DialogueManager.GetInstance().dialogueIsPlaying)
-	{
-		return;
-	}*/
+	/**/
 	public static DialogueManager GetInstance()
 	{
 		return instance;
 	}
 	private void Start()
 	{
-		dialogueIsPlaying = false;
-		dialoguePanel.SetActive(false);
+		dialogueIsPlaying = true;
+		dialoguePanel.SetActive(true);
 
 		choicesText = new TextMeshProUGUI[choices.Length];
 		int index = 0;
@@ -58,14 +56,14 @@ public class DialogueManager : MonoBehaviour
 			return;
 		}
 		//need a custom input to continue and for it to not skip the text immidiately
-		if (Input.GetKeyDown(KeyCode.W))
-		{
-			ContinueStory();
-		}
+		StartCoroutine(KeyPressDelay());
 	}
 
 	public void EnterDialogueMode(TextAsset inkJSON)
 	{
+		KeyboardInputs.i.StateMachine.ChangeState(PausedGameState.i);
+		KeyboardInputs.i.PauseDialogue();
+
 		currentStory = new Story(inkJSON.text);
 		dialogueIsPlaying = true;
 		dialoguePanel.SetActive(true);
@@ -93,6 +91,8 @@ public class DialogueManager : MonoBehaviour
 		else
 		{
 			StartCoroutine(ExitDialogueMode());
+			KeyboardInputs.i.StateMachine.ChangeState(FreeRoamState.i);
+			KeyboardInputs.i.ResumeGame();
 		}
 	}
 
@@ -130,5 +130,13 @@ public class DialogueManager : MonoBehaviour
 	public void MakeChoice(int choiceIndex)
 	{
 		currentStory.ChooseChoiceIndex(choiceIndex);
+	}
+	private IEnumerator KeyPressDelay()
+	{
+		yield return new WaitForSeconds(secondsDelay);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			ContinueStory();
+		}
 	}
 }

@@ -14,6 +14,7 @@ public class KeyboardInputs : MonoBehaviour
 	[Header("Prefabs")]
 	public GameObject PauseMenu;
 	public GameObject MapMenu;
+	public DialogueTrigger TriggerDialogue;
 
 	RiseToNirvana Controls;
 
@@ -50,6 +51,8 @@ public class KeyboardInputs : MonoBehaviour
 
 
 		MapMenu.GetComponentInParent<MapUI>().Init(stair);
+
+		//TriggerDialogue.TutorialTrigger();
 		//EventManager.onCutScene += PausedGame;
 	}
 	public void OnEnable()
@@ -205,5 +208,10 @@ public class KeyboardInputs : MonoBehaviour
 			GUILayout.Label(state.GetType().ToString(), style);
 		}
 
+	}
+
+	public void PauseDialogue()
+	{
+		state = GameState.Paused;
 	}
 }

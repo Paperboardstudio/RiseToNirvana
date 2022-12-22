@@ -16,23 +16,38 @@ public class DialogueTrigger : MonoBehaviour
 	private void Awake()
 	{
 		playerInRange = true;//default is false
-		visualCue.SetActive(true);//default is false
+		//visualCue.SetActive(true);//default is false
 	}
 
-	private void Update()
+	/*private void Update()
 	{
 		if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
 		{
-			visualCue.SetActive(true);
-			if (Input.GetKeyDown(KeyCode.W))
+			//visualCue.SetActive(true);
+			if (Input.GetKeyDown(KeyCode.C))
 			{
 				DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
 			}
 		}
 		else
 		{
-			visualCue.SetActive(false);
+			//visualCue.SetActive(false);
 		}
+	}*/
+	private void Start()
+	{
+		if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
+		{
+			//visualCue.SetActive(true);
+			//if (Input.GetKeyDown(KeyCode.W))
+			//
+				DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
+			//}
+		}
+	}
+	public void TutorialTrigger()
+	{
+
 	}
 
 	//Need to create a custom trigger for dialogue to happen
