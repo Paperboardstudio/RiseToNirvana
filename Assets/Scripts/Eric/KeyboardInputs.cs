@@ -62,8 +62,6 @@ public class KeyboardInputs : MonoBehaviour
 		MapMenu.GetComponentInParent<MapUI>().Init(stair);
 
 		TutorialMenu.SetActive(true);
-		//TriggerDialogue.TutorialTrigger();
-		//EventManager.onCutScene += PausedGame;
 	}
 
 	void ShowDialog()
@@ -86,17 +84,7 @@ public class KeyboardInputs : MonoBehaviour
 
 		Controls.Player.Newaction.performed += ctx => InputSystem.onAnyButtonPress.CallOnce(CheckKboardInputs);
 
-		//Controls.Player.Newaction.performed += OnNewactionPerformed;
-		//Controls.Player.Newaction.performed += Pressed;
 	}
-
-	/*
-	public void OnNewactionPerformed(InputAction.CallbackContext ctx)
-	{
-		InputControl oldcontrol;
-		string o = InputSystem.onAnyButtonPress.CallOnce(ctx).ToString();
-	}
-	*/
 
 	private void CheckKboardInputs(InputControl oldcontrol)
 	{
@@ -178,7 +166,6 @@ public class KeyboardInputs : MonoBehaviour
 	
 	}
 
-
 	public void PausedGame()
 	{
 		if(state != GameState.Paused)
@@ -211,45 +198,6 @@ public class KeyboardInputs : MonoBehaviour
 			Debug.Log("Paused Game " + state);
 	}
 
-	/*
-	/// <summary>
-	/// Check for inputaction according to your current inputsystem.
-	/// Curently using it here but it should be done in the GameController
-	/// </summary>
-	void CheckKboardInputs()
-	{
-		//InputSystem.onAnyButtonPress.CallOnce(ctrl => oldcontrol = ctrl.displayName.ToString().ToLower());
-		//Debug.Log(Keyboard.current[(Key)16].wasPressedThisFrame);
-
-		InputSystem.onAnyButtonPress += OnAnyButtonPress;
-
-		string newkey = stair.GetStep();
-		Debug.Log(newkey);
-		Debug.Log(oldcontrol);
-		if (newkey.Equals(oldcontrol))
-		{
-			stair.DestroyCurrentStep();
-		}
-
-		if (PlayerInputs.actions["onType"].WasPressedThisFrame())
-			Debug.Log("R");
-	
-		Keyboard kboard = Keyboard.current;
-
-		if (kboard.anyKey.wasPressedThisFrame)
-		{
-			foreach (KeyControl k in kboard.allKeys)
-			{
-				if (k.wasPressedThisFrame)
-				{
-					Debug.Log((int)k.keyCode + "   path = " + k.path);
-					break;
-				}
-			}
-		}
-
-	}
-*/
 	/// <summary>
 	/// Called in Pause Menu, Exit Button
 	/// </summary>
