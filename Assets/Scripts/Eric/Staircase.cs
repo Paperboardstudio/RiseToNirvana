@@ -115,10 +115,6 @@ public class Staircase : MonoBehaviour
 		{
 			KeyboardInputs.i.Interact(++counter);
 		}
-		if (CurrentFloor == 5)
-		{
-			KeyboardInputs.i.Interact(++counter);
-		}
 		if (CurrentFloor == 7)
 		{
 			KeyboardInputs.i.Interact(++counter);
