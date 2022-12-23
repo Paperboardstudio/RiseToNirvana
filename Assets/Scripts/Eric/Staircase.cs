@@ -207,6 +207,11 @@ public class Staircase : MonoBehaviour
 		{
 			KeyboardInputs.i.Interact(++counter);
 		}
+		if (CurrentFloor == 50)
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene(3);
+		}
+	
 
 		currentStep = 0;
 		for (int i = 0; i < steps.Count; i++)
