@@ -6,36 +6,42 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using System;
 
-public enum GameState { FreeRoam, Paused }
+public enum GameState { FreeRoam, Paused , Dialog }
 public class KeyboardInputs : MonoBehaviour
 {
 	public static KeyboardInputs i;
 
 	[Header("Prefabs")]
-	public GameObject PauseMenu;
-	public GameObject MapMenu;
-	public DialogueTrigger TriggerDialogue;
-	[field: SerializeField] private PlayerController playerController;
+	[field: SerializeField] GameObject PauseMenu;
+	[field: SerializeField] GameObject MapMenu;
+	[field: SerializeField] GameObject TutorialMenu;
 
+	public DialogueTrigger TriggerDialogue;
 	RiseToNirvana Controls;
 
 	[Header("References to script")]
+	[field: SerializeField] private PlayerController playerController;
 	public Staircase stair;
 	public ScoreManager score;
 
 	public StateMachine<KeyboardInputs> StateMachine { get; private set; } //State machine is missing stuff but it works just for checking pausing
 	public GameState state { get; private set; }
+	public bool SavedKey = false; // Hacky way of preventing miss score after dialogue
 
 	public event Action<bool> OnGamePaused;		// Subscribe the event here to the function
 
 	[Header("Debug")]
 	public bool DebugMode = false;
 
+	[Header("Dialogues")]
+	[field: SerializeField] List<Dialog> dialog;
+
 	public void Awake()
 	{
 		i = this;
 		Controls = new RiseToNirvana();
 	}
+
 	void Start()
 	{
 		if (stair == null)
@@ -46,41 +52,84 @@ public class KeyboardInputs : MonoBehaviour
 		
 		if (playerController == null)
 			playerController = FindObjectOfType<PlayerController>();
-		
+
+		DialogueMan.Instance.OnShowDialog += ShowDialog;
+		DialogueMan.Instance.OnCloseDialog += CloseDialog;
 
 		StateMachine = new StateMachine<KeyboardInputs>(this);
 		StateMachine.ChangeState(FreeRoamState.i);
 
-
 		MapMenu.GetComponentInParent<MapUI>().Init(stair);
 
+		TutorialMenu.SetActive(true);
 		//TriggerDialogue.TutorialTrigger();
 		//EventManager.onCutScene += PausedGame;
 	}
+
+	void ShowDialog()
+	{
+		state = GameState.Dialog;
+	}
+
+	void CloseDialog()
+	{
+		if(state == GameState.Dialog)
+		{
+			state = GameState.FreeRoam;
+		}
+	}
+
 	public void OnEnable()
 	{
 		Controls.Enable();
 		Controls.Player.OnPause.performed += ctx => PausedGame();
-		
+
 		Controls.Player.Newaction.performed += ctx => InputSystem.onAnyButtonPress.CallOnce(CheckKboardInputs);
 
+		//Controls.Player.Newaction.performed += OnNewactionPerformed;
+		//Controls.Player.Newaction.performed += Pressed;
 	}
+
+	/*
+	public void OnNewactionPerformed(InputAction.CallbackContext ctx)
+	{
+		InputControl oldcontrol;
+		string o = InputSystem.onAnyButtonPress.CallOnce(ctx).ToString();
+	}
+	*/
 
 	private void CheckKboardInputs(InputControl oldcontrol)
 	{
-		if(state != GameState.Paused)
+		if (TutorialMenu.activeInHierarchy)
+		{
+			TutorialMenu.SetActive(false);
+			//Start intro dialog
+			KeyboardInputs.i.Interact(0);
+		}
+
+		if (state == GameState.Dialog)
+		{
+			playerController.IsWalking(0);
+			DialogueMan.Instance.HandleUpdate();
+		}
+
+		if (state != GameState.Paused && state != GameState.Dialog)
 		{
 			string newkey = stair.GetStep();
 			string passedKey = oldcontrol.displayName.ToString().ToLower();			
 			Time.timeScale = 1f;
 
-			if (newkey.Equals(passedKey) && !newkey.Equals("esc"))
+			if (newkey.Equals(passedKey))
 			{
+				SavedKey = false;
+				// Walking animation 0 is stop, 1 walking
 				playerController.IsWalking(1);
+				
 				AddScoreDelegate();
 				stair.DestroyCurrentStep();
 			}
-			else {
+			else if(!passedKey.Equals("esc") && !SavedKey)
+			{
 				playerController.IsWalking(0);
 				AddMissDelegate();
 			}
@@ -89,36 +138,44 @@ public class KeyboardInputs : MonoBehaviour
 				Debug.Log("Stairs key :" + newkey + " Typed Key: "+passedKey);
 		}
 	}
-	void AddMissDelegate()
+
+	public void AddMissDelegate()
 	{
 		ScoreManager.updateScore += AddMissesScorePoints;
 		ScoreManager.updateScore();
 		ScoreManager.updateScore -= AddMissesScorePoints;
 	}
+
 	void AddScoreDelegate()
 	{
 		ScoreManager.updateScore += AddCurrentScorePoints;
 		ScoreManager.updateScore();
 		ScoreManager.updateScore -= AddCurrentScorePoints;
 	}
+
 	void AddMissesScorePoints()
 	{
 		score.missScore++;
+		score.currentScore -= 1;
 		score.UpdateUI();
 	}
+
 	void AddCurrentScorePoints()
 	{
 		score.currentScore += 10;
 		score.CheckHighScore();
 		score.UpdateUI();
 	}
+
 	public void OnDisable()
 	{
 		Controls.Disable();
 	}
+
 	private void Update()
 	{
 		// StateMachine.Execute(); This belongs here but we did it kinda wrong and update the StateMachine manually
+	
 	}
 
 
@@ -202,20 +259,34 @@ public class KeyboardInputs : MonoBehaviour
 	}
 	void OnGUI()
 	{
-		var style = new GUIStyle();
-		style.fontSize = 24;
-
-		GUILayout.Label("STATE STACK", style);
-
-		foreach (var state in StateMachine.StateStack)
+		if (DebugMode)
 		{
-			GUILayout.Label(state.GetType().ToString(), style);
-		}
+			var style = new GUIStyle();
+			style.fontSize = 24;
 
+			GUILayout.Label("STATE STACK", style);
+
+			foreach (var state in StateMachine.StateStack)
+			{
+				GUILayout.Label(state.GetType().ToString(), style);
+			}
+		}
 	}
 
+	/// <summary>
+	/// ASSIGN THE DIALOGUES IN THE INSPECTOR
+	/// event for interacting with the dialogues
+	/// </summary>
+	/// <param name="eventNumber">the dialogue number we want to play (check inspector)</param>
+	public void Interact(int eventNumber)
+	{
+		StartCoroutine(DialogueMan.Instance.ShowDialog(dialog[eventNumber]));
+	}
+
+	// HMMM
 	public void PauseDialogue()
 	{
 		state = GameState.Paused;
 	}
+	
 }

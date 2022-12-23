@@ -69,6 +69,9 @@ public class Staircase : MonoBehaviour
 			// increase the number of characters to display on each step
 			charactersPerStep++;
 		}
+
+		
+
 	}
 
 	/// <summary>
@@ -93,9 +96,118 @@ public class Staircase : MonoBehaviour
 
 	/// <summary>
 	/// Reset the states of the visual steps and regenerate their characters
+	/// Hardcoded events on floor X and Y, right now it's 1 and 3
 	/// </summary>
 	public void MoveToNewFloor()
 	{
+		int counter = 1;
+
+		// it gets called at the end of each floor so when we reach floor 2,  currentFloor will be 1.
+		if (CurrentFloor == 1)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 3)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 5)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 5)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 7)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 9)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 11)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 13)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 15)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 17)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 19)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 21)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 23)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 25)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 27)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 29)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 31)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 33)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 35)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 37)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 39)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 41)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 43)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 45)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 47)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+		if (CurrentFloor == 49)
+		{
+			KeyboardInputs.i.Interact(++counter);
+		}
+
 		currentStep = 0;
 		for (int i = 0; i < steps.Count; i++)
 		{
@@ -126,7 +238,7 @@ public class Staircase : MonoBehaviour
 			return GetStep();
 		}
 	}
-
+	
 	/// <summary>
 	///	regenerates the characters for all the steps and updates the text meshes
 	/// </summary>
