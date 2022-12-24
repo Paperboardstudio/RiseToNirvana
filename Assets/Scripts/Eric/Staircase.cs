@@ -17,7 +17,9 @@ public class Staircase : MonoBehaviour
 	[field: SerializeField] public int TopFloor { get; private set; }
 	[field: SerializeField] public int CurrentFloor { get; set;  }
 
-	public event Action UIChange;	
+	public event Action UIChange;
+
+	int counter = 1;
 
 
 	List<Step> steps { get; set; } // the list of instantiated steps
@@ -100,8 +102,6 @@ public class Staircase : MonoBehaviour
 	/// </summary>
 	public void MoveToNewFloor()
 	{
-		int counter = 1;
-
 		// it gets called at the end of each floor so when we reach floor 2,  currentFloor will be 1.
 		if (CurrentFloor == 1)
 		{
@@ -205,7 +205,7 @@ public class Staircase : MonoBehaviour
 		}
 		if (CurrentFloor == 50)
 		{
-			UnityEngine.SceneManagement.SceneManager.LoadScene(3);
+			UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 		}
 	
 
