@@ -202,6 +202,8 @@ public class Staircase : MonoBehaviour
 		if (CurrentFloor == 49)
 		{
 			KeyboardInputs.i.Interact(++counter);
+			UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+
 		}
 		if (CurrentFloor == 50)
 		{
