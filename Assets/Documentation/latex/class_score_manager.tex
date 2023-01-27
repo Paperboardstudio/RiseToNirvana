@@ -1,0 +1,35 @@
+\hypertarget{class_score_manager}{}\doxysection{Score\+Manager Class Reference}
+\label{class_score_manager}\index{ScoreManager@{ScoreManager}}
+Inheritance diagram for Score\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_score_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_score_manager_a70a8e44fdb6c1353c7040fe50c12270b}\label{class_score_manager_a70a8e44fdb6c1353c7040fe50c12270b}} 
+delegate void {\bfseries Update\+Score} ()
+\item 
+\mbox{\Hypertarget{class_score_manager_a8a3912d9f01a5ce9c08328a7a71b0372}\label{class_score_manager_a8a3912d9f01a5ce9c08328a7a71b0372}} 
+void {\bfseries Check\+High\+Score} ()
+\begin{DoxyCompactList}\small\item\em Creates an int variable named \char`\"{}\+High\+Score\char`\"{} that stores the highest value of \char`\"{}current\+Score\char`\"{} Checks if the value of \char`\"{}current\+Score\char`\"{} is bigger than the value of the \char`\"{}\+High\+Score\char`\"{} variable Only stores the value of \char`\"{}\+High\+Score\char`\"{} localy on the PC Can be dynamic by being call in the function that adds points to current\+Score. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_score_manager_a55a7e81b4fdf98ea1276d3996c90fb63}\label{class_score_manager_a55a7e81b4fdf98ea1276d3996c90fb63}} 
+void {\bfseries Update\+UI} ()
+\begin{DoxyCompactList}\small\item\em Updates the text of \char`\"{}high\+Score\+Text\char`\"{} and the value of \char`\"{}\+High\+Score\char`\"{} Can be dynamic by being call in the function that adds points to current\+Score Updates the text of \char`\"{}current\+Score\+Text\char`\"{} Can be dynamic by being call in the function that adds points to current\+Score Updates the text of \char`\"{}misses\+Score\+Text\char`\"{} Can be dynamic by being call in the function that adds points to miss\+Score. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_score_manager_a28a6f01a6d3102bf5feed46e110455e4}\label{class_score_manager_a28a6f01a6d3102bf5feed46e110455e4}} 
+int {\bfseries miss\+Score} = 0
+\item 
+\mbox{\Hypertarget{class_score_manager_ab9a8f6fdfcf881d70d165d2201d8d2c3}\label{class_score_manager_ab9a8f6fdfcf881d70d165d2201d8d2c3}} 
+int {\bfseries current\+Score} = 0
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_score_manager_ad03fea726e33aae6eb0be048c6e5340a}\label{class_score_manager_ad03fea726e33aae6eb0be048c6e5340a}} 
+static Update\+Score {\bfseries update\+Score}
+\end{DoxyCompactItemize}

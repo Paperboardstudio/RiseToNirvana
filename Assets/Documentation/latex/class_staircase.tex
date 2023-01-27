@@ -1,0 +1,62 @@
+\hypertarget{class_staircase}{}\doxysection{Staircase Class Reference}
+\label{class_staircase}\index{Staircase@{Staircase}}
+Inheritance diagram for Staircase\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_staircase}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_staircase_aa7fd42d956d0591ac4d27a9fcef92ce0}\label{class_staircase_aa7fd42d956d0591ac4d27a9fcef92ce0}} 
+void {\bfseries Destroy\+Current\+Step} ()
+\begin{DoxyCompactList}\small\item\em Destroy the current step (might change to highlighting) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_staircase_aaa6b96508ec1db156db0b2fe49705152}\label{class_staircase_aaa6b96508ec1db156db0b2fe49705152}} 
+void {\bfseries Move\+To\+New\+Floor} ()
+\begin{DoxyCompactList}\small\item\em Reset the states of the visual steps and regenerate their characters Hardcoded events on floor X and Y, right now it\textquotesingle{}s 1 and 3. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{class_staircase_a6c61a326f38ca718c8c84c97d13ecfad}{Get\+Step}} ()
+\begin{DoxyCompactList}\small\item\em returns the character from the current step and regenerates if we reach the top of the steps \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_staircase_af229873af48eb713927cefa810c7df03}\label{class_staircase_af229873af48eb713927cefa810c7df03}} 
+void {\bfseries Regenerate\+Characters} ()
+\begin{DoxyCompactList}\small\item\em regenerates the characters for all the steps and updates the text meshes \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_staircase_a14e0219838866a47bae05f60bed806c7}\label{class_staircase_a14e0219838866a47bae05f60bed806c7}} 
+Game\+Object {\bfseries step\+Prefab}
+\item 
+\mbox{\Hypertarget{class_staircase_a0408498d7b9ba14bdb4bcb95a88b4aab}\label{class_staircase_a0408498d7b9ba14bdb4bcb95a88b4aab}} 
+Transform {\bfseries spawn\+Location\+Prefab}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_staircase_a5d67ac82781872d4b58b76e939dd9cfc}\label{class_staircase_a5d67ac82781872d4b58b76e939dd9cfc}} 
+int {\bfseries Top\+Floor}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_staircase_a9f3b0d2a9259f51552d1fc9fa8e8916f}\label{class_staircase_a9f3b0d2a9259f51552d1fc9fa8e8916f}} 
+int {\bfseries Current\+Floor}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_staircase_a1887fd16f5fd5922cbb4d669dc7fd246}\label{class_staircase_a1887fd16f5fd5922cbb4d669dc7fd246}} 
+Action {\bfseries UIChange}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_staircase_a6c61a326f38ca718c8c84c97d13ecfad}\label{class_staircase_a6c61a326f38ca718c8c84c97d13ecfad}} 
+\index{Staircase@{Staircase}!GetStep@{GetStep}}
+\index{GetStep@{GetStep}!Staircase@{Staircase}}
+\doxysubsubsection{\texorpdfstring{GetStep()}{GetStep()}}
+{\footnotesize\ttfamily string Staircase.\+Get\+Step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns the character from the current step and regenerates if we reach the top of the steps 
+
+\begin{DoxyReturn}{Returns}
+returns the character from the current step
+\end{DoxyReturn}

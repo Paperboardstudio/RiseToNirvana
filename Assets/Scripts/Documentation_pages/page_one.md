@@ -1,0 +1,6 @@
+# How to use it
+
+1 - Go to the Documentation folder (Assets/Documentation)
+2 - Click on HTML
+3 - Open any html file (ideally index.html)
+
